@@ -3,6 +3,7 @@ import { addToCart } from "../api/cartApi";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import ProductImage from "./ProductImage";
+import { trackAddToCart, trackBackendActivity } from "../analytics/analytics"; // ✅ ADDED
 
 export default function ProductCard({ product }) {
   const { user, isAuthenticated } = useAuth();
@@ -18,6 +19,11 @@ export default function ProductCard({ product }) {
     try {
       setAdding(true);
       await addToCart(user.userId, product.productId, 1);
+
+      // ✅ ADDED: Track add to cart
+      trackAddToCart(product, 1);
+      trackBackendActivity('ADD_TO_CART', { productId: product.productId });
+
       setMessage("Added to cart.");
       window.setTimeout(() => setMessage(""), 2500);
     } catch (e) {
