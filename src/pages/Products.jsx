@@ -4,6 +4,7 @@ import { getProducts, getProductsByCategory, getCategories, searchProducts } fro
 import ProductGrid from "../components/ProductGrid";
 import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
+import { trackSearch, trackBackendActivity } from "../analytics/analytics";  // ✅ ADDED
 
 export default function Products() {
   const [params, setParams] = useSearchParams();
@@ -38,6 +39,17 @@ export default function Products() {
   useEffect(() => { getCategories().then((r) => setCategories(r.data || [])).catch(() => {}); }, []);
   useEffect(() => { load(); }, [categoryId, params.get("keyword")]);
   useEffect(() => { setKeyword(params.get("keyword") || ""); }, [params]);
+
+  // ✅ ADDED: Safety net — track SEARCH whenever ?keyword= is in the URL
+  useEffect(() => {
+    const kw = params.get("keyword");
+    if (kw && kw.trim()) {
+      trackSearch(kw.trim());
+      trackBackendActivity('SEARCH', { searchKeyword: kw.trim() })
+        .then(ok => console.log('🔍 SEARCH tracked:', kw.trim(), '→', ok))
+        .catch(err => console.error('🔍 SEARCH failed:', err));
+    }
+  }, [params.get("keyword")]);
 
   const brands = useMemo(() => [...new Set(products.map((p) => p.brand).filter(Boolean))].sort(), [products]);
   const filteredProducts = useMemo(() => {
