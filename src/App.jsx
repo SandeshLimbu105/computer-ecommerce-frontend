@@ -1,8 +1,8 @@
-
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
+import AnalyticsTracker from "./components/AnalyticsTracker";  // ✅ ADDED
 
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -21,6 +21,7 @@ import NotFound from "./pages/NotFound";
 export default function App() {
   return (
     <BrowserRouter>
+      <AnalyticsTracker />  {/* ✅ ADDED - Tracks page views on route changes */}
       <Navbar />
 
       <main className="min-vh-100 bg-light">

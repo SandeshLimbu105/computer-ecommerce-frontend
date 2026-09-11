@@ -7,9 +7,9 @@ import ProductGrid from "../components/ProductGrid";
 import ProductImage from "../components/ProductImage";
 import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
-import SEO from "../components/SEO";  // ✅ ADDED
+import SEO from "../components/SEO";  //  ADDED
 import { useAuth } from "../context/AuthContext";
-import { trackProductView, trackAddToCart, trackBackendActivity } from "../analytics/analytics";  // ✅ ADDED
+import { trackProductView, trackAddToCart, trackBackendActivity } from "../analytics/analytics";  //  ADDED
 
 export default function ProductDetails() {
   const { id } = useParams();
