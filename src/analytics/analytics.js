@@ -101,10 +101,13 @@ export const trackPurchase = (order) => {
 // Custom Backend Analytics
 // ============================================
 
+//  Use environment variable for backend API URL
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+
 export const trackBackendActivity = async (activityType, data = {}) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch('/api/admin/analytics/track', {
+        const response = await fetch(`${API_BASE_URL}/admin/analytics/track`, {  // FIXED
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
